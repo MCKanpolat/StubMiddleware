@@ -1,0 +1,39 @@
+﻿namespace StubGenerator.Core
+{
+    public enum FakeDataType
+    {
+        DomainName,
+        DomainSuffix,
+        DomainWord,
+        Email,
+        UserName,
+        FirstName,
+        FullName,
+        LastName,
+        NamePrefix,
+        NameSuffix,
+        City,
+        CityPrefix,
+        CitySuffix,
+        Country,
+        SecondaryAddress,
+        StreetAddress,
+        StreetName,
+        StreetSuffix,
+        UkCountry,
+        UkCounty,
+        UkPostCode,
+        UsState,
+        UsStateAbbr,
+        ZipCode,
+        CompanyBS,
+        CompanyCatchPhrase,
+        CompanyName,
+        CompanySuffix,
+        ConfigSeparator,
+        LoremParagraph,
+        LoremSentence,
+        PhoneNumber,
+        RandomNumber
+    }
+}

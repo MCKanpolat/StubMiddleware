@@ -1,0 +1,56 @@
+﻿using System;
+using System.Collections.Concurrent;
+
+namespace StubGenerator.Core
+{
+    internal class FakerMapping
+    {
+        private readonly ConcurrentDictionary<FakeDataType, Func<object>> _fakerMappings;
+        public FakerMapping()
+        {
+            _fakerMappings = new ConcurrentDictionary<FakeDataType, Func<object>>();
+            _fakerMappings.AddOrUpdate(FakeDataType.Email,
+                () => { return Faker.Internet.Email(); },
+               ArgumentExistingEx());
+
+            _fakerMappings.AddOrUpdate(FakeDataType.FirstName,
+             () => { return Faker.Name.First(); },
+             ArgumentExistingEx());
+
+            _fakerMappings.AddOrUpdate(FakeDataType.LastName,
+            () => { return Faker.Name.Last(); },
+            ArgumentExistingEx());
+
+            _fakerMappings.AddOrUpdate(FakeDataType.City,
+             () => { return Faker.Address.City(); },
+             ArgumentExistingEx());
+        }
+
+        private static Func<FakeDataType, Func<object>, Func<object>> ArgumentExistingEx()
+        {
+            return (key, eval) =>
+            {
+                throw new ArgumentException(key.ToString());
+            };
+        }
+
+        static FakerMapping()
+        {
+            Instance = new FakerMapping();
+        }
+        internal static FakerMapping Instance { get; private set; }
+
+
+        public object GenerateData(FakeDataType fakeDataType)
+        {
+            if (_fakerMappings.TryGetValue(fakeDataType, out Func<object> func))
+            {
+                return func.Invoke();
+            }
+            else
+            {
+                throw new NotSupportedException($"The {fakeDataType} type not found!");
+            }
+        }
+    }
+}
