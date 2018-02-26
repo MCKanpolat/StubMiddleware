@@ -4,6 +4,11 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>StubGenerator</AssemblyName>
     <RootNamespace>StubGenerator</RootNamespace>
+    <Authors>MCKanpolat</Authors>
+    <Company>MCKanpolat</Company>
+    <PackageProjectUrl>https://github.com/MCKanpolat/StubMiddleware</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MCKanpolat/StubMiddleware</RepositoryUrl>
+    <PackageTags>stub stubgenerator</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>

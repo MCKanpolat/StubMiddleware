@@ -2,6 +2,14 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <Authors>MCKanpolat</Authors>
+    <Company>MCKanpolat</Company>
+    <PackageProjectUrl>https://github.com/MCKanpolat/StubMiddleware</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MCKanpolat/StubMiddleware</RepositoryUrl>
+    <PackageTags>stub stubgenerator middleware asp.net core</PackageTags>
+    <PackageReleaseNotes />
+    <Copyright></Copyright>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
