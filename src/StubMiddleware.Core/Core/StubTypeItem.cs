@@ -5,10 +5,10 @@ namespace StubGenerator.Core
 {
     public sealed class StubTypeItem
     {
-        private List<KeyValuePair<string, FakeDataType>> _propertyMapping;
-        public StubTypeItem() => _propertyMapping = new List<KeyValuePair<string, FakeDataType>>();
+        private List<KeyValuePair<string, StubDataType>> _propertyMapping;
+        public StubTypeItem() => _propertyMapping = new List<KeyValuePair<string, StubDataType>>();
 
-        public void SetMapping(List<KeyValuePair<string, FakeDataType>> mapping)
+        public void SetMapping(List<KeyValuePair<string, StubDataType>> mapping)
         {
             _propertyMapping = mapping ?? throw new ArgumentNullException(nameof(mapping));
         }

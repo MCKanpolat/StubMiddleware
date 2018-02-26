@@ -1,6 +1,6 @@
 ﻿namespace StubGenerator.Core
 {
-    public enum FakeDataType
+    public enum StubDataType
     {
         DomainName,
         DomainSuffix,

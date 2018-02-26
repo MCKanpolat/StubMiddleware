@@ -3,7 +3,7 @@ using System.Linq;
 using StubGenerator.Caching;
 using StubGenerator.Core;
 using StubGenerator.Defaults;
-using StubGenerator.Test.Dto;
+using StubGenerator.Test.Models;
 using Xunit;
 
 namespace StubGenerator.Test
@@ -15,8 +15,8 @@ namespace StubGenerator.Test
         {
             var stubManagerOptions = new StubManagerOptions() { AutoGenerateUnknown = true, AutoResolveByNaming = true };
             _stubManager = new StubManager(stubManagerOptions,
-                new StubTypeCacheManager(new StubTypeMemoryCache(new DefaultCacheKeyGenerator())),
-                new DefaultFakeDataMappingProfile());
+                new StubTypeCacheManager(new StubTypeMemoryCache(new DefaultStubTypeCacheKeyGenerator())),
+                new DefaultStubDataMappingProfile());
         }
 
         [Fact(DisplayName = "Mapping_Check_By_Naming_Default_Conventions")]

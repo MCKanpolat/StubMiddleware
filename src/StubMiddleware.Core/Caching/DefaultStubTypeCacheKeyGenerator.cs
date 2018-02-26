@@ -1,8 +1,8 @@
 ﻿namespace StubGenerator.Caching
 {
-    public sealed class DefaultCacheKeyGenerator : CacheKeyGeneratorBase
+    public sealed class DefaultStubTypeCacheKeyGenerator : IStubTypeCacheKeyGenerator
     {
-        public override string GenerateKey<T>()
+        public string GenerateKey<T>()
         {
             var refType = typeof(T);
             return $"{refType.Assembly.GetName().Name}_{refType.FullName}";

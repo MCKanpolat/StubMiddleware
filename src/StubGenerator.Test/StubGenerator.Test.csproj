@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\StubGenerator.Test.Models\StubGenerator.Test.Models.csproj" />
     <ProjectReference Include="..\StubMiddleware.Core\StubGenerator.csproj" />
   </ItemGroup>
 

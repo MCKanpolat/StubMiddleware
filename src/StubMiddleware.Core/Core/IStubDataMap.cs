@@ -3,9 +3,9 @@ using System.Reflection;
 
 namespace StubGenerator.Core
 {
-    public interface IFakeDataMap
+    public interface IStubDataMap
     {
         Predicate<PropertyInfo> Condition { get; }
-        FakeDataType FakeDataType { get; }
+        StubDataType StubDataType { get; }
     }
 }
