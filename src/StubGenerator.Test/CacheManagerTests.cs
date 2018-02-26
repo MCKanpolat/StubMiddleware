@@ -2,25 +2,25 @@ using System.Threading.Tasks;
 using StubGenerator.Caching;
 using StubGenerator.Core;
 using StubGenerator.Defaults;
-using StubGenerator.Test.Dto;
+using StubGenerator.Test.Models;
 using Xunit;
 
 namespace StubGenerator.Test
 {
     public class CacheManagerTests
     {
-        private readonly CacheKeyGeneratorBase _cacheKeyGenerator;
+        private readonly IStubTypeCacheKeyGenerator _cacheKeyGenerator;
         private readonly StubTypeCacheManager _stubTypeCacheManager;
         private readonly IStubTypeCache _stubTypeMemoryCache;
-        private readonly StubManager _stubManager;
+        private readonly IStubManager _stubManager;
 
         public CacheManagerTests()
         {
-            _cacheKeyGenerator = new DefaultCacheKeyGenerator();
+            _cacheKeyGenerator = new DefaultStubTypeCacheKeyGenerator();
             _stubTypeMemoryCache = new StubTypeMemoryCache(_cacheKeyGenerator);
             _stubTypeCacheManager = new StubTypeCacheManager(_stubTypeMemoryCache);
             var stubManagerOptions = new StubManagerOptions() { AutoGenerateUnknown = true, AutoResolveByNaming = true };
-            _stubManager = new StubManager(stubManagerOptions, _stubTypeCacheManager, new DefaultFakeDataMappingProfile());
+            _stubManager = new StubManager(stubManagerOptions, _stubTypeCacheManager, new DefaultStubDataMappingProfile());
         }
 
         [Fact(DisplayName = "Cache_Key_Generator_Test")]

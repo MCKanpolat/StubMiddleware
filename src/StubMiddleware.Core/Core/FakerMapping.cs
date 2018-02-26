@@ -5,28 +5,28 @@ namespace StubGenerator.Core
 {
     internal class FakerMapping
     {
-        private readonly ConcurrentDictionary<FakeDataType, Func<object>> _fakerMappings;
+        private readonly ConcurrentDictionary<StubDataType, Func<object>> _fakerMappings;
         public FakerMapping()
         {
-            _fakerMappings = new ConcurrentDictionary<FakeDataType, Func<object>>();
-            _fakerMappings.AddOrUpdate(FakeDataType.Email,
+            _fakerMappings = new ConcurrentDictionary<StubDataType, Func<object>>();
+            _fakerMappings.AddOrUpdate(StubDataType.Email,
                 () => { return Faker.Internet.Email(); },
                ArgumentExistingEx());
 
-            _fakerMappings.AddOrUpdate(FakeDataType.FirstName,
+            _fakerMappings.AddOrUpdate(StubDataType.FirstName,
              () => { return Faker.Name.First(); },
              ArgumentExistingEx());
 
-            _fakerMappings.AddOrUpdate(FakeDataType.LastName,
+            _fakerMappings.AddOrUpdate(StubDataType.LastName,
             () => { return Faker.Name.Last(); },
             ArgumentExistingEx());
 
-            _fakerMappings.AddOrUpdate(FakeDataType.City,
+            _fakerMappings.AddOrUpdate(StubDataType.City,
              () => { return Faker.Address.City(); },
              ArgumentExistingEx());
         }
 
-        private static Func<FakeDataType, Func<object>, Func<object>> ArgumentExistingEx()
+        private static Func<StubDataType, Func<object>, Func<object>> ArgumentExistingEx()
         {
             return (key, eval) =>
             {
@@ -41,15 +41,15 @@ namespace StubGenerator.Core
         internal static FakerMapping Instance { get; private set; }
 
 
-        public object GenerateData(FakeDataType fakeDataType)
+        public object GenerateData(StubDataType stubDataType)
         {
-            if (_fakerMappings.TryGetValue(fakeDataType, out Func<object> func))
+            if (_fakerMappings.TryGetValue(stubDataType, out Func<object> func))
             {
                 return func.Invoke();
             }
             else
             {
-                throw new NotSupportedException($"The {fakeDataType} type not found!");
+                throw new NotSupportedException($"The {stubDataType} type not found!");
             }
         }
     }

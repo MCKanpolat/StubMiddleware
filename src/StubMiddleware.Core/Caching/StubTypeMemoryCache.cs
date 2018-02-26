@@ -6,8 +6,8 @@ namespace StubGenerator.Caching
     public class StubTypeMemoryCache : IStubTypeCache
     {
         private readonly ConcurrentDictionary<string, StubTypeItem> Cache;
-        private readonly CacheKeyGeneratorBase _cacheKeyGenerator;
-        public StubTypeMemoryCache(CacheKeyGeneratorBase cacheKeyGenerator)
+        private readonly IStubTypeCacheKeyGenerator _cacheKeyGenerator;
+        public StubTypeMemoryCache(IStubTypeCacheKeyGenerator cacheKeyGenerator)
         {
             Cache = new ConcurrentDictionary<string, StubTypeItem>();
             _cacheKeyGenerator = cacheKeyGenerator;

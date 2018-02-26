@@ -4,10 +4,10 @@ using StubGenerator.Core;
 
 namespace StubGenerator.Defaults
 {
-    public class EmailFakeDataNamingMap : IFakeDataMap<string>
+    public class EmailStubDataMap : IStubDataMap<string>
     {
         public Predicate<PropertyInfo> Condition => w => w.Name.Contains("mail");
 
-        public FakeDataType FakeDataType { get => FakeDataType.Email; }
+        public StubDataType StubDataType { get => StubDataType.Email; }
     }
 }

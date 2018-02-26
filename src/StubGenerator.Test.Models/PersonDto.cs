@@ -1,4 +1,4 @@
-﻿namespace StubGenerator.Test.Dto
+﻿namespace StubGenerator.Test.Models
 {
     public class PersonDto
     {

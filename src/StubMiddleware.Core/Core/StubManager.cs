@@ -6,27 +6,27 @@ using StubGenerator.Caching;
 
 namespace StubGenerator.Core
 {
-    public class StubManager
+    public class StubManager : IStubManager
     {
-        public StubManager(StubManagerOptions stubManagerOptions, IStubTypeCacheManager stubTypeCacheManager, IFakeDataMappingProfile fakeDataMappingProfile)
+        public StubManager(StubManagerOptions stubManagerOptions, IStubTypeCacheManager stubTypeCacheManager, IStubDataMappingProfile stubDataMappingProfile)
         {
             StubManagerOptions = stubManagerOptions ?? throw new ArgumentNullException(nameof(stubManagerOptions));
             StubTypeCacheManager = stubTypeCacheManager ?? throw new ArgumentNullException(nameof(stubTypeCacheManager));
-            FakeDataMappingProfile = fakeDataMappingProfile ?? throw new ArgumentNullException(nameof(fakeDataMappingProfile));
+            StubDataMappingProfile = stubDataMappingProfile ?? throw new ArgumentNullException(nameof(stubDataMappingProfile));
         }
 
         public IStubTypeCacheManager StubTypeCacheManager { get; private set; }
-        public IFakeDataMappingProfile FakeDataMappingProfile { get; private set; }
+        public IStubDataMappingProfile StubDataMappingProfile { get; private set; }
         public StubManagerOptions StubManagerOptions { get; private set; }
 
         internal void GenerateData<T>(T instance, PropertyInfo propertyInfo)
         {
-            var convention = FakeDataMappingProfile.Conventions.FirstOrDefault(w => w.Condition.Invoke(propertyInfo));
-            object generatedData = convention != null ? HandleKnownType(instance, convention.FakeDataType) : HandleUnknownType(propertyInfo);
+            var convention = StubDataMappingProfile.Conventions.FirstOrDefault(w => w.Condition.Invoke(propertyInfo));
+            object generatedData = convention != null ? HandleKnownType(instance, convention.StubDataType) : HandleUnknownType(propertyInfo);
             propertyInfo.SetValue(instance, generatedData, null);
         }
 
-        internal object HandleKnownType<T>(T instance, FakeDataType fakeDataType)
+        internal object HandleKnownType<T>(T instance, StubDataType fakeDataType)
         {
             return FakerMapping.Instance.GenerateData(fakeDataType);
         }
@@ -48,12 +48,12 @@ namespace StubGenerator.Core
             if (cachedStub == null)
             {
                 var avaliableProps = instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(w => w.CanWrite);
-                var mapping = new List<KeyValuePair<string, FakeDataType>>();
+                var mapping = new List<KeyValuePair<string, StubDataType>>();
                 foreach (var pinfo in avaliableProps)
                 {
-                    var convention = FakeDataMappingProfile.Conventions.FirstOrDefault(w => w.Condition.Invoke(pinfo));
+                    var convention = StubDataMappingProfile.Conventions.FirstOrDefault(w => w.Condition.Invoke(pinfo));
                     if (convention != null)
-                        mapping.Add(new KeyValuePair<string, FakeDataType>(pinfo.Name, convention.FakeDataType));
+                        mapping.Add(new KeyValuePair<string, StubDataType>(pinfo.Name, convention.StubDataType));
                 }
                 var typeItem = new StubTypeItem();
                 typeItem.SetMapping(mapping);
