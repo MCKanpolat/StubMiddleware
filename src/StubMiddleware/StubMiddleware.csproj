@@ -2,14 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
-    <Authors>MCKanpolat</Authors>
-    <Company>MCKanpolat</Company>
+    <Authors>mckanpolat</Authors>
+    <Company>mckanpolat</Company>
     <PackageProjectUrl>https://github.com/MCKanpolat/StubMiddleware</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MCKanpolat/StubMiddleware</RepositoryUrl>
     <PackageTags>stub stubgenerator middleware asp.net core</PackageTags>
     <PackageReleaseNotes />
     <Copyright></Copyright>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Description>Stub Data Generator Middleware for Asp.Net core</Description>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

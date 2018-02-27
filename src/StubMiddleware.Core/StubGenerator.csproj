@@ -4,11 +4,13 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <AssemblyName>StubGenerator</AssemblyName>
     <RootNamespace>StubGenerator</RootNamespace>
-    <Authors>MCKanpolat</Authors>
-    <Company>MCKanpolat</Company>
+    <Authors>mckanpolat</Authors>
+    <Company>mckanpolat</Company>
     <PackageProjectUrl>https://github.com/MCKanpolat/StubMiddleware</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MCKanpolat/StubMiddleware</RepositoryUrl>
     <PackageTags>stub stubgenerator</PackageTags>
+    <Version>1.0.1</Version>
+    <Description>Stub Data Generator for .net core</Description>
   </PropertyGroup>
 
   <ItemGroup>
