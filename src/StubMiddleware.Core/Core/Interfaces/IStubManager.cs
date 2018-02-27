@@ -5,7 +5,7 @@ namespace StubGenerator.Core
 {
     public interface IStubManager
     {
-        IList<T> CreateListOfSize<T>(int size, Action<T> setDefaults = null) where T : class, new();
-        T CreateNew<T>(Action<T> setDefaults = null) where T : class, new();
+        IList<T> CreateListOfSize<T>(int size, int subItemSize = 3, Action<T> setDefaults = null) where T : class, new();
+        T CreateNew<T>(int subItemSize = 3, Action<T> setDefaults = null) where T : class, new();
     }
 }

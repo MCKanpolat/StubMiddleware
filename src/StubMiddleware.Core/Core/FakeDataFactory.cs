@@ -13,13 +13,13 @@ namespace StubGenerator.Core.FakeDataProvider
         private readonly IConventionMappingProfile _stubDataMappingProfile;
 
         public FakeDataFactory()
-            :this(new DefaultConventionMappingProfile())
+            : this(new DefaultConventionMappingProfile())
         {
         }
 
         public FakeDataFactory(IConventionMappingProfile stubDataMappingProfile)
         {
-            _stubDataMappingProfile = stubDataMappingProfile;
+            _stubDataMappingProfile = stubDataMappingProfile ?? throw new ArgumentNullException(nameof(stubDataMappingProfile));
         }
 
         public object ProvideValue(PropertyInfo propertyInfo)
@@ -27,7 +27,7 @@ namespace StubGenerator.Core.FakeDataProvider
             if (!propertyInfo.PropertyType.IsSimple())
                 return null;
 
-            var matchingConvetion = _stubDataMappingProfile.Conventions.Where(c => c.Condition(propertyInfo)).FirstOrDefault();
+            var matchingConvetion = _stubDataMappingProfile.Conventions.FirstOrDefault(c => c.Condition(propertyInfo));
             if (matchingConvetion != null)
                 return matchingConvetion.Generator.Generate();
 
@@ -35,7 +35,7 @@ namespace StubGenerator.Core.FakeDataProvider
 
             if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                 propertyType = propertyInfo.PropertyType.GetGenericArguments()[0];
-            
+
             return GenerateValueByType(propertyType);
         }
 
@@ -53,6 +53,8 @@ namespace StubGenerator.Core.FakeDataProvider
                 return new EnumValueGenerator(propertyType).Generate();
             else if (propertyType == typeof(Guid))
                 return new GuidValueGenerator().Generate();
+            else if (propertyType == typeof(bool))
+                return new BoolValueGenerator().Generate();
             else
                 return null;
         }

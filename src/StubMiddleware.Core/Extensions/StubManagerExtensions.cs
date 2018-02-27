@@ -17,7 +17,7 @@ namespace StubGenerator.Core
             return result;
         }
 
-        public static object InvokeCreateNew(this IStubManager stubManager, string typeName)
+        public static object InvokeCreateNew(this IStubManager stubManager, string typeName, int subItemSize = 3)
         {
             if (stubManager == null)
             {
@@ -29,15 +29,20 @@ namespace StubGenerator.Core
                 throw new ArgumentException("message", nameof(typeName));
             }
 
+            if (subItemSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(subItemSize), "Subitem Size must be positive number!");
+            }
+
             var type = LoadType(typeName);
 
 
             MethodInfo method = typeof(IStubManager).GetMethod("CreateNew");
             MethodInfo genericMethod = method.MakeGenericMethod(type);
-            return genericMethod.Invoke(stubManager, null);
+            return genericMethod.Invoke(stubManager, new object[] { subItemSize, null });
         }
 
-        public static object InvokeCreateListOfSize(this IStubManager stubManager, string typeName, int size)
+        public static object InvokeCreateListOfSize(this IStubManager stubManager, string typeName, int size, int subItemSize)
         {
             if (stubManager == null)
             {
@@ -49,10 +54,15 @@ namespace StubGenerator.Core
                 throw new ArgumentOutOfRangeException(nameof(size), "List Size must be positive number!");
             }
 
+            if (subItemSize <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(subItemSize), "Subitem Size must be positive number!");
+            }
+
             var type = LoadType(typeName);
             MethodInfo method = typeof(IStubManager).GetMethod("CreateListOfSize");
             MethodInfo genericMethod = method.MakeGenericMethod(type);
-            return genericMethod.Invoke(stubManager, parameters: new object[] { size });
+            return genericMethod.Invoke(stubManager, parameters: new object[] { size, subItemSize, null });
         }
     }
 }

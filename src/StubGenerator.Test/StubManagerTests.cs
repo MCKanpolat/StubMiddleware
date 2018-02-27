@@ -1,11 +1,9 @@
+using System;
 using System.Globalization;
 using System.Linq;
-using StubGenerator.Caching;
 using StubGenerator.Core;
-using StubGenerator.Defaults;
 using StubGenerator.Test.Models;
 using Xunit;
-using System;
 
 namespace StubGenerator.Test
 {
@@ -136,7 +134,7 @@ namespace StubGenerator.Test
             var givenDataTime = new DateTime(2017, 1, 1);
             var givenEnum = EnTestEnum.Option3;
             var givenInteger = 31;
-            var generatedStubData = _stubManager.CreateNew<InnerComplexType>(x => { x.DateTimeProperty = givenDataTime; x.EnumProperty = givenEnum; x.IntegerProperty = givenInteger; });
+            var generatedStubData = _stubManager.CreateNew<InnerComplexType>(setDefaults: x => { x.DateTimeProperty = givenDataTime; x.EnumProperty = givenEnum; x.IntegerProperty = givenInteger; });
             Assert.Equal(givenDataTime, generatedStubData.DateTimeProperty);
             Assert.Equal(givenEnum, generatedStubData.EnumProperty);
             Assert.Equal(givenInteger, generatedStubData.IntegerProperty);
