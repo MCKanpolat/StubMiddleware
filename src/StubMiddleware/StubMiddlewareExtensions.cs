@@ -11,46 +11,42 @@ namespace StubMiddleware
         {
             var stubMiddlewareOptions = new StubMiddlewareOptions();
             services.AddSingleton<StubManagerOptions>(stubMiddlewareOptions);
-            services.AddSingleton<IStubDataMappingProfile, DefaultStubDataMappingProfile>();
+            services.AddSingleton<IConventionMappingProfile, DefaultConventionMappingProfile>();
             services.AddSingleton<IStubTypeCacheKeyGenerator, DefaultStubTypeCacheKeyGenerator>();
-            services.AddSingleton<IStubTypeCache, StubTypeMemoryCache>();
-            services.AddSingleton<IStubTypeCacheManager, StubTypeCacheManager>();
+            services.AddSingleton<IStubTypeCache, MemoryStubTypeCache>();
             services.AddSingleton<IStubManager, StubManager>();
         }
 
         public static void AddStubMiddleware<TStubDataMappingProfile, TCacheKeyGenerator, TStubTypeCache>(this IServiceCollection services, StubMiddlewareOptions stubMiddlewareOptions)
-            where TStubDataMappingProfile : class, IStubDataMappingProfile
+            where TStubDataMappingProfile : class, IConventionMappingProfile
             where TCacheKeyGenerator : class, IStubTypeCacheKeyGenerator
             where TStubTypeCache : class, IStubTypeCache
         {
             services.AddSingleton<StubManagerOptions>(stubMiddlewareOptions);
-            services.AddSingleton<IStubDataMappingProfile, TStubDataMappingProfile>();
+            services.AddSingleton<IConventionMappingProfile, TStubDataMappingProfile>();
             services.AddSingleton<IStubTypeCacheKeyGenerator, TCacheKeyGenerator>();
             services.AddSingleton<IStubTypeCache, TStubTypeCache>();
-            services.AddSingleton<IStubTypeCacheManager, StubTypeCacheManager>();
             services.AddSingleton<IStubManager, StubManager>();
         }
 
         public static void AddStubMiddleware<TStubDataMappingProfile>(this IServiceCollection services, StubMiddlewareOptions stubMiddlewareOptions)
-            where TStubDataMappingProfile : class, IStubDataMappingProfile
+            where TStubDataMappingProfile : class, IConventionMappingProfile
         {
             services.AddSingleton<StubManagerOptions>(stubMiddlewareOptions);
-            services.AddSingleton<IStubDataMappingProfile, TStubDataMappingProfile>();
+            services.AddSingleton<IConventionMappingProfile, TStubDataMappingProfile>();
             services.AddSingleton<IStubTypeCacheKeyGenerator, DefaultStubTypeCacheKeyGenerator>();
-            services.AddSingleton<IStubTypeCache, StubTypeMemoryCache>();
-            services.AddSingleton<IStubTypeCacheManager, StubTypeCacheManager>();
+            services.AddSingleton<IStubTypeCache, MemoryStubTypeCache>();
             services.AddSingleton<IStubManager, StubManager>();
         }
 
         public static void AddStubMiddleware<TStubDataMappingProfile, TStubTypeCacheKeyGenerator>(this IServiceCollection services, StubMiddlewareOptions stubMiddlewareOptions)
-            where TStubDataMappingProfile : class, IStubDataMappingProfile
+            where TStubDataMappingProfile : class, IConventionMappingProfile
             where TStubTypeCacheKeyGenerator : class, IStubTypeCacheKeyGenerator
         {
             services.AddSingleton<StubManagerOptions>(stubMiddlewareOptions);
-            services.AddSingleton<IStubDataMappingProfile, TStubDataMappingProfile>();
+            services.AddSingleton<IConventionMappingProfile, TStubDataMappingProfile>();
             services.AddSingleton<IStubTypeCacheKeyGenerator, TStubTypeCacheKeyGenerator>();
-            services.AddSingleton<IStubTypeCache, StubTypeMemoryCache>();
-            services.AddSingleton<IStubTypeCacheManager, StubTypeCacheManager>();
+            services.AddSingleton<IStubTypeCache, MemoryStubTypeCache>();
             services.AddSingleton<IStubManager, StubManager>();
         }
     }

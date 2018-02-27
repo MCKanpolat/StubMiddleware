@@ -1,12 +1,14 @@
 ﻿using StubGenerator.Core;
+using System.Reflection;
 
 namespace StubGenerator.Caching
 {
     public interface IStubTypeCache
     {
         void Clear();
-        StubTypeItem Get<T>(T instance) where T : class;
-        bool Set<T>(T instance, StubTypeItem stubTypeItem) where T : class;
+        PropertyInfo[] Get<T>(T instance) where T : class;
+        PropertyInfo[] GetOrAdd<T>(T instance, PropertyInfo[] propertyInfos) where T : class;
+        bool Set<T>(T instance, PropertyInfo[] stubTypeItem) where T : class;
         bool IsEmpty();
     }
 }
