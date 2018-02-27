@@ -3,79 +3,92 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using StubGenerator.Caching;
+using StubGenerator.Extensions;
+using System.Collections;
+using StubGenerator.Core.Interfaces;
+using StubGenerator.Core.FakeDataProvider;
 
 namespace StubGenerator.Core
 {
     public class StubManager : IStubManager
     {
-        public StubManager(StubManagerOptions stubManagerOptions, IStubTypeCacheManager stubTypeCacheManager, IStubDataMappingProfile stubDataMappingProfile)
+        private readonly IFakeDataFactory _fakeDataFactory;
+        private readonly IStubTypeCache _stubTypeCache;
+
+        public StubManager(StubManagerOptions stubManagerOptions)
+            :this(stubManagerOptions, new MemoryStubTypeCache(), new FakeDataFactory())
+        {
+
+        }
+
+        public StubManager(StubManagerOptions stubManagerOptions, IStubTypeCache stubTypeCache, IFakeDataFactory fakeDataFactory)
         {
             StubManagerOptions = stubManagerOptions ?? throw new ArgumentNullException(nameof(stubManagerOptions));
-            StubTypeCacheManager = stubTypeCacheManager ?? throw new ArgumentNullException(nameof(stubTypeCacheManager));
-            StubDataMappingProfile = stubDataMappingProfile ?? throw new ArgumentNullException(nameof(stubDataMappingProfile));
+            _stubTypeCache = stubTypeCache ?? throw new ArgumentNullException(nameof(stubTypeCache));
+            _fakeDataFactory = fakeDataFactory ?? throw new ArgumentNullException(nameof(fakeDataFactory));
         }
 
-        public IStubTypeCacheManager StubTypeCacheManager { get; private set; }
-        public IStubDataMappingProfile StubDataMappingProfile { get; private set; }
         public StubManagerOptions StubManagerOptions { get; private set; }
 
-        internal void GenerateData<T>(T instance, PropertyInfo propertyInfo)
-        {
-            var convention = StubDataMappingProfile.Conventions.FirstOrDefault(w => w.Condition.Invoke(propertyInfo));
-            object generatedData = convention != null ? HandleKnownType(instance, convention.StubDataType) : HandleUnknownType(propertyInfo);
-            propertyInfo.SetValue(instance, generatedData, null);
-        }
-
-        internal object HandleKnownType<T>(T instance, StubDataType fakeDataType)
-        {
-            return FakerMapping.Instance.GenerateData(fakeDataType);
-        }
-
-        internal object HandleUnknownType(PropertyInfo propertyInfo)
-        {
-            if (propertyInfo.DeclaringType.IsValueType)
-            {
-                return Activator.CreateInstance(propertyInfo.DeclaringType);
-            }
-
-            return null;
-        }
-
-        public T CreateNew<T>() where T : class, new()
+        public T CreateNew<T>(Action<T> setDefaults = null) where T : class, new()
         {
             var instance = new T();
-            var cachedStub = StubTypeCacheManager.Get(instance);
-            if (cachedStub == null)
+            var cachedPropertyInfo = _stubTypeCache.Get(instance);
+            if (cachedPropertyInfo == null)
             {
-                var avaliableProps = instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(w => w.CanWrite);
-                var mapping = new List<KeyValuePair<string, StubDataType>>();
-                foreach (var pinfo in avaliableProps)
-                {
-                    var convention = StubDataMappingProfile.Conventions.FirstOrDefault(w => w.Condition.Invoke(pinfo));
-                    if (convention != null)
-                        mapping.Add(new KeyValuePair<string, StubDataType>(pinfo.Name, convention.StubDataType));
-                }
-                var typeItem = new StubTypeItem();
-                typeItem.SetMapping(mapping);
-                StubTypeCacheManager.Set(instance, typeItem);
-                typeItem.PrepareData(instance);
+                cachedPropertyInfo = instance.GetType().GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(p => p.CanWrite).ToArray();
+                _stubTypeCache.Set(instance, cachedPropertyInfo);
             }
-            else
-            {
-                cachedStub.PrepareData(instance);
-            }
+
+            FillPropertiesWithFakeData(instance, cachedPropertyInfo);
+
+            setDefaults?.Invoke(instance);
 
             return instance;
         }
 
-        public IList<T> CreateListOfSize<T>(int size) where T : class, new()
+        public IList<T> CreateListOfSize<T>(int size, Action<T> setDefaults = null) where T : class, new()
         {
             var result = new List<T>();
             for (int i = 0; i < size; i++)
             {
-                result.Add(CreateNew<T>());
+                result.Add(CreateNew<T>(setDefaults));
             }
             return result;
         }
+
+        private void FillPropertiesWithFakeData<TObject>(TObject obj, PropertyInfo[] propertyInfos)
+        {
+            foreach (PropertyInfo property in propertyInfos)
+            {
+                if(property.PropertyType.IsCollectionType())
+                {
+                    var collectionTypeInstance = Activator.CreateInstance(property.PropertyType);
+                    var complexType = property.PropertyType.GetGenericArguments()[0];
+                    property.SetValue(obj, collectionTypeInstance);
+                    for(var i = 0; i < 3; i++)
+                    {
+                        var item = Activator.CreateInstance(complexType);                        
+                        FillPropertiesWithFakeData(item, _stubTypeCache.GetOrAdd(item, property.PropertyType.GetGenericArguments()[0].GetProperties()));
+                        collectionTypeInstance.GetType().GetMethod("Add").Invoke(collectionTypeInstance, new[] { item });
+                    }
+                }
+                else
+                {
+                    if (!property.PropertyType.IsSimple())
+                    {
+                        var innerComplexObj = Activator.CreateInstance(property.PropertyType);
+                        obj.GetType().GetProperty(property.Name).SetValue(obj, innerComplexObj);
+                        FillPropertiesWithFakeData(innerComplexObj, _stubTypeCache.GetOrAdd(innerComplexObj, innerComplexObj.GetType().GetProperties()));
+                    }
+                    else
+                    {
+                        var generatedData = _fakeDataFactory.ProvideValue(property);
+                        property.SetValue(obj, generatedData, null);
+                    }
+                }
+            }
+        }
+
     }
 }

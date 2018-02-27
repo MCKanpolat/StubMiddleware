@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+VisualStudioVersion = 15.0.27004.2008
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StubMiddleware", "src\StubMiddleware\StubMiddleware.csproj", "{4253CF0A-AEFA-4614-8744-4A0022C88A02}"
 EndProject
@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StubGenerator", "src\StubMi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StubGenerator.Test", "src\StubGenerator.Test\StubGenerator.Test.csproj", "{2407E03B-1076-46CE-B4F1-02724D730933}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StubMiddleware.Web.Test", "src\StubMiddleware.Web.Test\StubMiddleware.Web.Test.csproj", "{317167C4-04C9-484B-BE73-299C69DEDB2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StubMiddleware.Web.Samples", "src\StubMiddleware.Web.Test\StubMiddleware.Web.Samples.csproj", "{317167C4-04C9-484B-BE73-299C69DEDB2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StubGenerator.Test.Models", "src\StubGenerator.Test.Models\StubGenerator.Test.Models.csproj", "{8E7F96E9-CB7C-4E2A-BD35-A664910DD0B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StubGenerator.Test.Models", "src\StubGenerator.Test.Models\StubGenerator.Test.Models.csproj", "{8E7F96E9-CB7C-4E2A-BD35-A664910DD0B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
