@@ -16,7 +16,7 @@ namespace StubMiddleware
 
 
         [HttpGet, Route("list")]
-        public async Task<IActionResult> list([FromQuery]string className, [FromQuery]int listSize, [FromQuery]string culture)
+        public async Task<IActionResult> list([FromQuery]string className, [FromQuery]int listSize, [FromQuery]int subItemlistSize, [FromQuery]string culture)
         {
             if (!string.IsNullOrWhiteSpace(culture))
             {
@@ -24,7 +24,7 @@ namespace StubMiddleware
                 CultureInfo.CurrentCulture = cultureInfo;
                 CultureInfo.CurrentUICulture = cultureInfo;
             }
-            var instance = _stubManager.InvokeCreateListOfSize(className, listSize);
+            var instance = _stubManager.InvokeCreateListOfSize(className, listSize, subItemlistSize == 0 ? 3 : subItemlistSize);
             if (instance == null)
             {
                 return NotFound(className);
@@ -34,7 +34,7 @@ namespace StubMiddleware
 
 
         [HttpGet, Route("get")]
-        public async Task<IActionResult> get([FromQuery]string className, [FromQuery]string culture)
+        public async Task<IActionResult> get([FromQuery]string className, [FromQuery]int subItemlistSize, [FromQuery]string culture)
         {
             if (!string.IsNullOrWhiteSpace(culture))
             {
@@ -43,7 +43,7 @@ namespace StubMiddleware
                 CultureInfo.CurrentUICulture = cultureInfo;
             }
 
-            var instance = _stubManager.InvokeCreateNew(className);
+            var instance = _stubManager.InvokeCreateNew(className, subItemlistSize == 0 ? 3 : subItemlistSize);
             if (instance == null)
             {
                 return NotFound(className);

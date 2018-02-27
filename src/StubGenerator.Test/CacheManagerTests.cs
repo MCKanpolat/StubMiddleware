@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using StubGenerator.Caching;
-using StubGenerator.Core;
 using StubGenerator.Test.Models;
 using Xunit;
 
@@ -17,13 +16,11 @@ namespace StubGenerator.Test
             _stubTypeMemoryCache = new MemoryStubTypeCache(_cacheKeyGenerator);
         }
 
-        
-
         [Fact(DisplayName = "Cache_Key_Generator_Test")]
         public void CacheKeyGeneratorTest()
         {
             var cacheKey = _cacheKeyGenerator.GenerateKey<PersonDto>();
-            
+            Assert.NotEmpty(cacheKey);
         }
 
         [Fact(DisplayName = "Should add PropertyInfo Cache Successfully")]

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using StubGenerator.Caching;
-using StubGenerator.Extensions;
-using System.Collections;
-using StubGenerator.Core.Interfaces;
 using StubGenerator.Core.FakeDataProvider;
+using StubGenerator.Core.Interfaces;
+using StubGenerator.Extensions;
 
 namespace StubGenerator.Core
 {
@@ -16,9 +15,8 @@ namespace StubGenerator.Core
         private readonly IStubTypeCache _stubTypeCache;
 
         public StubManager(StubManagerOptions stubManagerOptions)
-            :this(stubManagerOptions, new MemoryStubTypeCache(), new FakeDataFactory())
+            : this(stubManagerOptions, new MemoryStubTypeCache(), new FakeDataFactory())
         {
-
         }
 
         public StubManager(StubManagerOptions stubManagerOptions, IStubTypeCache stubTypeCache, IFakeDataFactory fakeDataFactory)
@@ -30,7 +28,7 @@ namespace StubGenerator.Core
 
         public StubManagerOptions StubManagerOptions { get; private set; }
 
-        public T CreateNew<T>(Action<T> setDefaults = null) where T : class, new()
+        public T CreateNew<T>(int subItemSize = 3, Action<T> setDefaults = null) where T : class, new()
         {
             var instance = new T();
             var cachedPropertyInfo = _stubTypeCache.Get(instance);
@@ -40,35 +38,35 @@ namespace StubGenerator.Core
                 _stubTypeCache.Set(instance, cachedPropertyInfo);
             }
 
-            FillPropertiesWithFakeData(instance, cachedPropertyInfo);
+            FillPropertiesWithFakeData(instance, cachedPropertyInfo, subItemSize);
 
             setDefaults?.Invoke(instance);
 
             return instance;
         }
 
-        public IList<T> CreateListOfSize<T>(int size, Action<T> setDefaults = null) where T : class, new()
+        public IList<T> CreateListOfSize<T>(int size, int subItemSize = 3, Action<T> setDefaults = null) where T : class, new()
         {
             var result = new List<T>();
             for (int i = 0; i < size; i++)
             {
-                result.Add(CreateNew<T>(setDefaults));
+                result.Add(CreateNew(subItemSize, setDefaults));
             }
             return result;
         }
 
-        private void FillPropertiesWithFakeData<TObject>(TObject obj, PropertyInfo[] propertyInfos)
+        private void FillPropertiesWithFakeData<TObject>(TObject obj, PropertyInfo[] propertyInfos, int listItemSize = 3)
         {
             foreach (PropertyInfo property in propertyInfos)
             {
-                if(property.PropertyType.IsCollectionType())
+                if (property.PropertyType.IsCollectionType())
                 {
                     var collectionTypeInstance = Activator.CreateInstance(property.PropertyType);
                     var complexType = property.PropertyType.GetGenericArguments()[0];
                     property.SetValue(obj, collectionTypeInstance);
-                    for(var i = 0; i < 3; i++)
+                    for (var i = 0; i < listItemSize; i++)
                     {
-                        var item = Activator.CreateInstance(complexType);                        
+                        var item = Activator.CreateInstance(complexType);
                         FillPropertiesWithFakeData(item, _stubTypeCache.GetOrAdd(item, property.PropertyType.GetGenericArguments()[0].GetProperties()));
                         collectionTypeInstance.GetType().GetMethod("Add").Invoke(collectionTypeInstance, new[] { item });
                     }
@@ -89,6 +87,5 @@ namespace StubGenerator.Core
                 }
             }
         }
-
     }
 }
