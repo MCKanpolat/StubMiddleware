@@ -9,8 +9,8 @@ namespace StubMiddleware.Web.Test.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var testModelNs = typeof(PersonDto).FullName;
-            var testModelAsmName = typeof(PersonDto).Assembly.GetName().Name;
+            var testModelNs = typeof(ComplexModel).FullName;
+            var testModelAsmName = typeof(ComplexModel).Assembly.GetName().Name;
             var result = new RestApiResult();
             var url = Url.Action("get", "stubmiddleware", new { className = $"{testModelNs}, {testModelAsmName}", subItemlistSize = 3, culture = "en-us" });
             result.Links.Add(new LinkInfo() { Href = url, Method = "GET", Rel = "self" });

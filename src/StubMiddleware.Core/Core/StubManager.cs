@@ -79,7 +79,7 @@ namespace StubGenerator.Core
                     property.SetValue(obj, collectionTypeInstance);
                     for (var i = 0; i < listItemSize; i++)
                     {
-                        var item = Activator.CreateInstance(complexType);
+                        dynamic item = Activator.CreateInstance(complexType);
                         FillPropertiesWithFakeData(item, _stubTypeCache.GetOrAdd(item, property.PropertyType.GetGenericArguments()[0].GetProperties()));
                         collectionTypeInstance.GetType().GetMethod("Add").Invoke(collectionTypeInstance, new[] { item });
                     }
@@ -88,7 +88,7 @@ namespace StubGenerator.Core
                 {
                     if (!property.PropertyType.IsSimple())
                     {
-                        var innerComplexObj = Activator.CreateInstance(property.PropertyType);
+                        dynamic innerComplexObj = Activator.CreateInstance(property.PropertyType);
                         obj.GetType().GetProperty(property.Name).SetValue(obj, innerComplexObj);
                         FillPropertiesWithFakeData(innerComplexObj, _stubTypeCache.GetOrAdd(innerComplexObj, innerComplexObj.GetType().GetProperties()));
                     }
