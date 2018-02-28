@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace StubGenerator.Core
@@ -42,7 +43,7 @@ namespace StubGenerator.Core
             var type = LoadType(typeName);
 
 
-            MethodInfo method = typeof(IStubManager).GetMethod("CreateNew");
+            MethodInfo method = typeof(IStubManager).GetMethods().FirstOrDefault(w => w.Name == "CreateNew" && w.GetParameters().Count() == 2);
             MethodInfo genericMethod = method.MakeGenericMethod(type);
             return genericMethod.Invoke(stubManager, new object[] { subItemSize, null });
         }
@@ -65,7 +66,7 @@ namespace StubGenerator.Core
             }
 
             var type = LoadType(typeName);
-            MethodInfo method = typeof(IStubManager).GetMethod("CreateListOfSize");
+            MethodInfo method = typeof(IStubManager).GetMethods().FirstOrDefault(w => w.Name == "CreateListOfSize" && w.GetParameters().Count() == 3);
             MethodInfo genericMethod = method.MakeGenericMethod(type);
             return genericMethod.Invoke(stubManager, parameters: new object[] { size, subItemSize, null });
         }
