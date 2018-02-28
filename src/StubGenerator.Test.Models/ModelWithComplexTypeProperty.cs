@@ -5,6 +5,7 @@ namespace StubGenerator.Test.Models
 {
     public class ModelWithComplexTypeProperty
     {
+        public char PrefixChar { get; set; }
         public string ParentString { get; set; }
 
         public decimal ParentDecimal { get; set; }

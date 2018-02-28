@@ -1,10 +1,10 @@
 ﻿namespace StubGenerator.Core.FakeDataGenerators
 {
-    public class CompanyNameValueGenerator : IValueGenerator
+    public class UserNameValueGenerator : IValueGenerator
     {
         public object Generate()
         {
-            return Faker.Company.Name();
+            return Faker.Internet.UserName();
         }
     }
 }

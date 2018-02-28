@@ -25,11 +25,15 @@ namespace StubGenerator.Core.FakeDataProvider
         public object ProvideValue(PropertyInfo propertyInfo)
         {
             if (!propertyInfo.PropertyType.IsSimple())
+            {
                 return null;
+            }
 
             var matchingConvetion = _stubDataMappingProfile.Conventions.FirstOrDefault(c => c.Condition(propertyInfo));
             if (matchingConvetion != null)
+            {
                 return matchingConvetion.Generator.Generate();
+            }
 
             var propertyType = propertyInfo.PropertyType;
 
@@ -41,22 +45,47 @@ namespace StubGenerator.Core.FakeDataProvider
 
         private static object GenerateValueByType(Type propertyType)
         {
-            if (propertyType == typeof(string))
-                return new RandomStringValueGenerator().Generate();
-            else if (propertyType == typeof(int) || propertyType == typeof(double))
-                return new IntegerValueGenerator().Generate();
-            else if (propertyType == typeof(decimal))
-                return new DecimalValueGenerator().Generate();
-            else if (propertyType == typeof(DateTime))
-                return new DateTimeValueGenerator().Generate();
-            else if (propertyType.IsEnum)
+            if (propertyType.IsEnum)
+            {
                 return new EnumValueGenerator(propertyType).Generate();
+            }
             else if (propertyType == typeof(Guid))
+            {
                 return new GuidValueGenerator().Generate();
-            else if (propertyType == typeof(bool))
-                return new BoolValueGenerator().Generate();
-            else
-                return null;
+            }
+            switch (Type.GetTypeCode(propertyType))
+            {
+                case TypeCode.Char:
+                    return new CharValueGenerator().Generate();
+                case TypeCode.Int16:
+                    return new IntegerValueGeneratorBase<Int16>().Generate();
+                case TypeCode.Int32:
+                    return new IntegerValueGeneratorBase<Int32>().Generate();
+                case TypeCode.Int64:
+                    return new IntegerValueGeneratorBase<Int64>().Generate();
+                case TypeCode.UInt16:
+                    return new IntegerValueGeneratorBase<UInt16>().Generate();
+                case TypeCode.UInt32:
+                    return new IntegerValueGeneratorBase<UInt32>().Generate();
+                case TypeCode.UInt64:
+                    return new IntegerValueGeneratorBase<UInt64>().Generate();
+                case TypeCode.Single:
+                    return new IntegerValueGeneratorBase<Single>().Generate();
+                case TypeCode.Byte:
+                    return new IntegerValueGeneratorBase<Byte>().Generate();
+                case TypeCode.Double:
+                    return new DoubleValueGenerator().Generate();
+                case TypeCode.Decimal:
+                    return new DecimalValueGenerator().Generate();
+                case TypeCode.DateTime:
+                    return new DateTimeValueGenerator().Generate();
+                case TypeCode.Boolean:
+                    return new BoolValueGenerator().Generate();
+                default:
+                    {
+                        return null;
+                    }
+            }
         }
     }
 }

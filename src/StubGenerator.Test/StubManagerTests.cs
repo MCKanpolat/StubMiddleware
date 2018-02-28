@@ -12,7 +12,7 @@ namespace StubGenerator.Test
         private readonly StubManager _stubManager;
         public StubManagerTests()
         {
-            var stubManagerOptions = new StubManagerOptions() { AutoGenerateUnknown = true, AutoResolveByNaming = true };
+            var stubManagerOptions = new StubManagerOptions { AutoGenerateUnknown = true, AutoResolveByNaming = true };
             _stubManager = new StubManager(stubManagerOptions);
         }
 
@@ -67,6 +67,13 @@ namespace StubGenerator.Test
             var generatedStubData = _stubManager.CreateNew<InnerComplexType>();
             Assert.NotEqual(Guid.Empty, generatedStubData.GuidProperty);
             Assert.True(Guid.TryParse(generatedStubData.GuidProperty.ToString(), out _));
+        }
+
+        [Fact(DisplayName = "Should Generate Data For Char Type")]
+        public void Should_Generate_Data_For_Chard_Type()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelWithComplexTypeProperty>();
+            Assert.NotEqual(default(char), generatedStubData.PrefixChar);
         }
 
         [Fact(DisplayName = "Should Generate Data For DateTime Type")]

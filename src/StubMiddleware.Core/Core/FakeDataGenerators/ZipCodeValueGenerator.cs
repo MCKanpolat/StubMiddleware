@@ -1,10 +1,10 @@
 ﻿namespace StubGenerator.Core.FakeDataGenerators
 {
-    public class CompanyNameValueGenerator : IValueGenerator
+    public class ZipCodeValueGenerator : IValueGenerator
     {
         public object Generate()
         {
-            return Faker.Company.Name();
+            return Faker.Address.ZipCode();
         }
     }
 }
