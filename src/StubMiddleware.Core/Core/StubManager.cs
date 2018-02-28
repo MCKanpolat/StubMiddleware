@@ -13,7 +13,7 @@ namespace StubGenerator.Core
     {
         private readonly IFakeDataFactory _fakeDataFactory;
         private readonly IStubTypeCache _stubTypeCache;
-
+       
         public StubManager(StubManagerOptions stubManagerOptions)
             : this(stubManagerOptions, new MemoryStubTypeCache(), new FakeDataFactory())
         {
@@ -28,7 +28,11 @@ namespace StubGenerator.Core
 
         public StubManagerOptions StubManagerOptions { get; private set; }
 
-        public T CreateNew<T>(int subItemSize = 3, Action<T> setDefaults = null) where T : class, new()
+        public T CreateNew<T>(Action<T> setDefaults) where T : class, new() => CreateNew(Constants.DefaultListSize, setDefaults);
+
+        public T CreateNew<T>() where T : class, new() => CreateNew<T>(Constants.DefaultListSize, null);
+
+        public T CreateNew<T>(int subItemSize, Action<T> setDefaults) where T : class, new()
         {
             var instance = new T();
             var cachedPropertyInfo = _stubTypeCache.Get(instance);
@@ -45,7 +49,16 @@ namespace StubGenerator.Core
             return instance;
         }
 
-        public IList<T> CreateListOfSize<T>(int size, int subItemSize = 3, Action<T> setDefaults = null) where T : class, new()
+        public IList<T> CreateListOfSize<T>(int size) where T : class, new() =>
+            CreateListOfSize<T>(size, Constants.DefaultListSize, null);
+
+        public IList<T> CreateListOfSize<T>(int size, Action<T> setDefaults) where T : class, new() =>
+            CreateListOfSize(size, Constants.DefaultListSize, setDefaults);
+
+        public IList<T> CreateListOfSize<T>(int size, int subItemSize) where T : class, new() =>
+            CreateListOfSize<T>(size, subItemSize, null);
+
+        public IList<T> CreateListOfSize<T>(int size, int subItemSize, Action<T> setDefaults) where T : class, new()
         {
             var result = new List<T>();
             for (int i = 0; i < size; i++)
@@ -55,7 +68,7 @@ namespace StubGenerator.Core
             return result;
         }
 
-        private void FillPropertiesWithFakeData<TObject>(TObject obj, PropertyInfo[] propertyInfos, int listItemSize = 3)
+        private void FillPropertiesWithFakeData<TObject>(TObject obj, PropertyInfo[] propertyInfos, int listItemSize = Constants.DefaultListSize)
         {
             foreach (PropertyInfo property in propertyInfos)
             {

@@ -17,7 +17,12 @@ namespace StubGenerator.Core
             return result;
         }
 
-        public static object InvokeCreateNew(this IStubManager stubManager, string typeName, int subItemSize = 3)
+        public static object InvokeCreateNew(this IStubManager stubManager, string typeName)
+        {
+            return stubManager.InvokeCreateNew(typeName, Constants.DefaultListSize);
+        }
+
+        public static object InvokeCreateNew(this IStubManager stubManager, string typeName, int subItemSize)
         {
             if (stubManager == null)
             {
