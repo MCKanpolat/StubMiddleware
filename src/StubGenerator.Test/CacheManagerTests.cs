@@ -49,8 +49,8 @@ namespace StubGenerator.Test
             var personData = new PersonDto();
             var mainTask = Task.Run(async () =>
              {
-                 await Task.Run(() => _stubTypeMemoryCache.Set(personData, personData.GetType().GetProperties()));
-                 await Task.Run(() => _stubTypeMemoryCache.Get(personData));
+                 await Task.Run(() => _stubTypeMemoryCache.Set(personData, personData.GetType().GetProperties())).ConfigureAwait(false);
+                 await Task.Run(() => _stubTypeMemoryCache.Get(personData)).ConfigureAwait(false);
              });
 
             Assert.Null(mainTask.Exception);
