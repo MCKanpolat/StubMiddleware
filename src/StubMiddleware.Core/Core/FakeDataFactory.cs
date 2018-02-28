@@ -38,7 +38,9 @@ namespace StubGenerator.Core.FakeDataProvider
             var propertyType = propertyInfo.PropertyType;
 
             if (propertyInfo.PropertyType.IsGenericType && propertyInfo.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+            {
                 propertyType = propertyInfo.PropertyType.GetGenericArguments()[0];
+            }
 
             return GenerateValueByType(propertyType);
         }
