@@ -146,5 +146,14 @@ namespace StubGenerator.Test
             Assert.Equal(givenEnum, generatedStubData.EnumProperty);
             Assert.Equal(givenInteger, generatedStubData.IntegerProperty);
         }
+
+        [Fact(DisplayName = "Should Generate Data For Complex Type Properties Check Parameterless")]
+        public void Should_Generate_Data_For_Complex_Type_Properties_Check_Parameterless()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelWithComplexTypeProperty>();
+            Assert.NotNull(generatedStubData.ComplexType);
+            Assert.NotNull(generatedStubData.ModelConstructorMixed);
+            Assert.Null(generatedStubData.ModelConstructorHasParameters);
+        }
     }
 }

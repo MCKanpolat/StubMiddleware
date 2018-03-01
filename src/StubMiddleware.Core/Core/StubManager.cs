@@ -13,7 +13,7 @@ namespace StubGenerator.Core
     {
         private readonly IFakeDataFactory _fakeDataFactory;
         private readonly IStubTypeCache _stubTypeCache;
-       
+
         public StubManager(StubManagerOptions stubManagerOptions)
             : this(stubManagerOptions, new MemoryStubTypeCache(), new FakeDataFactory())
         {
@@ -88,9 +88,13 @@ namespace StubGenerator.Core
                 {
                     if (!property.PropertyType.IsSimple())
                     {
-                        dynamic innerComplexObj = Activator.CreateInstance(property.PropertyType);
-                        obj.GetType().GetProperty(property.Name).SetValue(obj, innerComplexObj);
-                        FillPropertiesWithFakeData(innerComplexObj, _stubTypeCache.GetOrAdd(innerComplexObj, innerComplexObj.GetType().GetProperties()));
+                        /*check the type has parameterless constructor*/
+                        if ((property.PropertyType.GetConstructor(Type.EmptyTypes) != null))
+                        {
+                            dynamic innerComplexObj = Activator.CreateInstance(property.PropertyType);
+                            obj.GetType().GetProperty(property.Name).SetValue(obj, innerComplexObj);
+                            FillPropertiesWithFakeData(innerComplexObj, _stubTypeCache.GetOrAdd(innerComplexObj, innerComplexObj.GetType().GetProperties()));
+                        }
                     }
                     else
                     {
