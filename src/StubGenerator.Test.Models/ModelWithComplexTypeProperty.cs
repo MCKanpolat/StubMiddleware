@@ -18,6 +18,10 @@ namespace StubGenerator.Test.Models
 
         public InnerComplexType ComplexType { get; set; }
 
+        public ModelConstructorHasParameters ModelConstructorHasParameters { get; set; }
+
+        public ModelConstructorMixed ModelConstructorMixed { get; set; }
+
         public List<InnerComplexType> CollectionTypeComplex { get; set; }
     }
 
@@ -42,10 +46,29 @@ namespace StubGenerator.Test.Models
         public Nullable<int> NullableIntegerProperty2 { get; set; }
     }
 
-    public enum EnTestEnum
+
+    public class ModelConstructorHasParameters
     {
-        Option1,
-        Option2,
-        Option3
+        public ModelConstructorHasParameters(int intField)
+        {
+            IntField = intField;
+        }
+
+        public int IntField { get; set; }
+    }
+
+
+    public class ModelConstructorMixed
+    {
+        public ModelConstructorMixed()
+        {
+        }
+
+        public ModelConstructorMixed(string firstName)
+        {
+            FirstName = firstName;
+        }
+
+        public string FirstName { get; set; }
     }
 }
