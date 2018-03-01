@@ -73,15 +73,18 @@ namespace StubGenerator.Core
             foreach (PropertyInfo property in propertyInfos)
             {
                 if (property.PropertyType.IsCollectionType())
-                {
-                    var collectionTypeInstance = Activator.CreateInstance(property.PropertyType);
-                    var complexType = property.PropertyType.GetGenericArguments()[0];
-                    property.SetValue(obj, collectionTypeInstance);
-                    for (var i = 0; i < listItemSize; i++)
+                {      /*check the type has parameterless constructor*/
+                    if ((property.PropertyType.GetConstructor(Type.EmptyTypes) != null))
                     {
-                        dynamic item = Activator.CreateInstance(complexType);
-                        FillPropertiesWithFakeData(item, _stubTypeCache.GetOrAdd(item, property.PropertyType.GetGenericArguments()[0].GetProperties()));
-                        collectionTypeInstance.GetType().GetMethod("Add").Invoke(collectionTypeInstance, new[] { item });
+                        var collectionTypeInstance = Activator.CreateInstance(property.PropertyType);
+                        var complexType = property.PropertyType.GetGenericArguments()[0];
+                        property.SetValue(obj, collectionTypeInstance);
+                        for (var i = 0; i < listItemSize; i++)
+                        {
+                            dynamic item = Activator.CreateInstance(complexType);
+                            FillPropertiesWithFakeData(item, _stubTypeCache.GetOrAdd(item, property.PropertyType.GetGenericArguments()[0].GetProperties()));
+                            collectionTypeInstance.GetType().GetMethod("Add").Invoke(collectionTypeInstance, new[] { item });
+                        }
                     }
                 }
                 else
