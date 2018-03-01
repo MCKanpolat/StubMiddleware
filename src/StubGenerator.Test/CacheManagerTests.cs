@@ -16,14 +16,14 @@ namespace StubGenerator.Test
             _stubTypeMemoryCache = new MemoryStubTypeCache(_cacheKeyGenerator);
         }
 
-        [Fact(DisplayName = "Cache_Key_Generator_Test")]
+        [Fact(DisplayName = "Cache Key Generator Test")]
         public void CacheKeyGeneratorTest()
         {
             var cacheKey = _cacheKeyGenerator.GenerateKey<PersonDto>();
             Assert.NotEmpty(cacheKey);
         }
 
-        [Fact(DisplayName = "Should add PropertyInfo Cache Successfully")]
+        [Fact(DisplayName = "Should Add PropertyInfo Cache Successfully")]
         public void Should_Add_PropertyInfos_To_Cache_Successfully()
         {
             var personData = new PersonDto();
@@ -33,7 +33,7 @@ namespace StubGenerator.Test
         }
 
 
-        [Fact(DisplayName = "Memory_Cache_Manager_Empty_Test")]
+        [Fact(DisplayName = "Ensure Memory Cache Manager Empty")]
         public void CacheManagerEmptyTest()
         {
             var personData = new PersonDto();
@@ -43,7 +43,7 @@ namespace StubGenerator.Test
         }
 
 
-        [Fact(DisplayName = "Memory_Cache_Manager_Concurrency_Test")]
+        [Fact(DisplayName = "Memory Cache Manager Concurrency")]
         public void CacheManagerConcurrencyTest()
         {
             var personData = new PersonDto();

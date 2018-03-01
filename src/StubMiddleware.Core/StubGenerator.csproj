@@ -9,7 +9,7 @@
     <PackageProjectUrl>https://github.com/MCKanpolat/StubMiddleware</PackageProjectUrl>
     <RepositoryUrl>https://github.com/MCKanpolat/StubMiddleware</RepositoryUrl>
     <PackageTags>stub stubgenerator</PackageTags>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <Description>Stub Data Generator for .net core</Description>
   </PropertyGroup>
 

@@ -155,5 +155,14 @@ namespace StubGenerator.Test
             Assert.NotNull(generatedStubData.ModelConstructorMixed);
             Assert.Null(generatedStubData.ModelConstructorHasParameters);
         }
+
+
+        [Fact(DisplayName = "Check Unsupported Types")]
+        public void Check_Unsupported_Types()
+        {
+            var generatedStubData = _stubManager.CreateNew<UnsupportedTypes>();
+            Assert.NotNull(generatedStubData);
+            Assert.Null(generatedStubData.ByteArray);
+        }
     }
 }

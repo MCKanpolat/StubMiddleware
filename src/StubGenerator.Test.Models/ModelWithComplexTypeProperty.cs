@@ -58,6 +58,12 @@ namespace StubGenerator.Test.Models
     }
 
 
+    public class UnsupportedTypes
+    {
+        public byte[] ByteArray { get; set; }
+    }
+
+
     public class ModelConstructorMixed
     {
         public ModelConstructorMixed()
