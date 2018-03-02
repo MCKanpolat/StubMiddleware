@@ -16,7 +16,7 @@ namespace StubGenerator.Test
             _stubManager = new StubManager(stubManagerOptions);
         }
 
-        [Fact(DisplayName = "Mapping_Check_By_Naming_Default_Conventions")]
+        [Fact(DisplayName = "Mapping Check By Naming Default Conventions")]
         public void Naming_Mapping_Check()
         {
             var stubDto = _stubManager.CreateNew<PersonDto>();
@@ -26,7 +26,7 @@ namespace StubGenerator.Test
         }
 
 
-        [Fact(DisplayName = "Mapping_Check_By_Naming_Default_Conventions_List_Of")]
+        [Fact(DisplayName = "Mapping Check By Naming Default Conventions List Of")]
         public void Naming_Mapping_Check_List_Of()
         {
             var listOfDto = _stubManager.CreateListOfSize<PersonDto>(10);
@@ -37,7 +37,7 @@ namespace StubGenerator.Test
             Assert.Equal(10, listOfDto.Count);
         }
 
-        [Fact(DisplayName = "Mapping_Check_By_Naming_Default_Conventions_Big_List")]
+        [Fact(DisplayName = "Mapping Check By Naming Default Conventions Big List")]
         public void Naming_Mapping_Check_Big_List()
         {
             var listOfDto = _stubManager.CreateListOfSize<PersonDto>(100);
@@ -49,7 +49,7 @@ namespace StubGenerator.Test
         }
 
 
-        [Fact(DisplayName = "Mapping_Check_By_Naming_Default_Conventions_DE_Culture")]
+        [Fact(DisplayName = "Mapping Check By Naming Default Conventions DE Culture")]
         public void Naming_Mapping_Check_Culture()
         {
             var deCulture = new CultureInfo("de-DE");
@@ -163,6 +163,36 @@ namespace StubGenerator.Test
             var generatedStubData = _stubManager.CreateNew<UnsupportedTypes>();
             Assert.NotNull(generatedStubData);
             Assert.Null(generatedStubData.ByteArray);
+        }
+
+
+        [Fact(DisplayName = "Should Generate Generic Class")]
+        public void Should_Generate_Generic_Class()
+        {
+            var generatedStubData = _stubManager.InvokeCreateNew("StubGenerator.Test.Models.GenericModel<StubGenerator.Test.Models.ModelWithComplexTypeProperty, StubGenerator.Test.Models>, StubGenerator.Test.Models");
+            Assert.NotNull(generatedStubData);
+        }
+
+        [Fact(DisplayName = "Should Generate Generic Class With Argument Count Specified")]
+        public void Should_Generate_Generic_Class_With_Argument_Count_Specified()
+        {
+            var generatedStubData = _stubManager.InvokeCreateNew("StubGenerator.Test.Models.GenericModel`1<StubGenerator.Test.Models.ModelWithComplexTypeProperty, StubGenerator.Test.Models>, StubGenerator.Test.Models");
+            Assert.NotNull(generatedStubData);
+        }
+
+
+        [Fact(DisplayName = "Should Generate Generic Class With 2 Argument")]
+        public void Should_Generate_Generic_Class_With_2_Argument()
+        {
+            var generatedStubData = _stubManager.InvokeCreateNew("StubGenerator.Test.Models.GenericModel<StubGenerator.Test.Models.ModelWithComplexTypeProperty, StubGenerator.Test.Models;StubGenerator.Test.Models.ComplexModel, StubGenerator.Test.Models>, StubGenerator.Test.Models");
+            Assert.NotNull(generatedStubData);
+        }
+
+        [Fact(DisplayName = "Should Generate Generic Class With 2 Argument Count Specified")]
+        public void Should_Generate_Generic_Class_With_2_Argument_Count_Specified()
+        {
+            var generatedStubData = _stubManager.InvokeCreateNew("StubGenerator.Test.Models.GenericModel`2<StubGenerator.Test.Models.ModelWithComplexTypeProperty, StubGenerator.Test.Models;StubGenerator.Test.Models.ComplexModel, StubGenerator.Test.Models>, StubGenerator.Test.Models");
+            Assert.NotNull(generatedStubData);
         }
     }
 }
