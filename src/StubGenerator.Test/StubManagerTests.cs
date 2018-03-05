@@ -69,6 +69,90 @@ namespace StubGenerator.Test
             Assert.True(Guid.TryParse(generatedStubData.GuidProperty.ToString(), out _));
         }
 
+
+        [Fact(DisplayName = "Should Generate Data For Byte Type In Range")]
+        public void Should_Generate_Data_For_Byte_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<Byte>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, byte.MinValue, byte.MaxValue);
+        }
+
+        [Fact(DisplayName = "Should Generate Data For Single Type In Range")]
+        public void Should_Generate_Data_For_Single_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<Single>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, Single.MinValue, Single.MaxValue);
+        }
+
+
+        [Fact(DisplayName = "Should Generate Data For Int16 Type In Range")]
+        public void Should_Generate_Data_For_Int16_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<Int16>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, Int16.MinValue, Int16.MaxValue);
+        }
+
+
+        [Fact(DisplayName = "Should Generate Data For Int32 Type In Range")]
+        public void Should_Generate_Data_For_Int32_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<Int32>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, Int32.MinValue, Int32.MaxValue);
+        }
+
+        [Fact(DisplayName = "Should Generate Data For Int64 Type In Range")]
+        public void Should_Generate_Data_For_Int64_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<Int64>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, Int64.MinValue, Int64.MaxValue);
+        }
+
+        [Fact(DisplayName = "Should Generate Data For Double Type In Range")]
+        public void Should_Generate_Data_For_Double_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<Double>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, Double.MinValue, Double.MaxValue);
+        }
+
+
+        [Fact(DisplayName = "Should Generate Data For Decimal Type In Range")]
+        public void Should_Generate_Data_For_Decimal_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<Decimal>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, Decimal.MinValue, Decimal.MaxValue);
+        }
+
+        [Fact(DisplayName = "Should Generate Data For UInt16 Type In Range")]
+        public void Should_Generate_Data_For_UInt16_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<UInt16>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, UInt16.MinValue, UInt16.MaxValue);
+        }
+
+        [Fact(DisplayName = "Should Generate Data For UInt32 Type In Range")]
+        public void Should_Generate_Data_For_UInt32_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<UInt32>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, UInt32.MinValue, UInt32.MaxValue);
+        }
+
+        [Fact(DisplayName = "Should Generate Data For UInt64 Type In Range")]
+        public void Should_Generate_Data_For_UInt64_Type_In_Range()
+        {
+            var generatedStubData = _stubManager.CreateNew<ModelOfType<UInt64>>();
+            Assert.NotNull(generatedStubData);
+            Assert.InRange(generatedStubData.Value, UInt64.MinValue, UInt64.MaxValue);
+        }
+
         [Fact(DisplayName = "Should Generate Data For Char Type")]
         public void Should_Generate_Data_For_Chard_Type()
         {
@@ -135,7 +219,7 @@ namespace StubGenerator.Test
             Assert.True(generatedStubData.CollectionTypeComplex[0].IntegerProperty != default(int));
         }
 
-        [Fact(DisplayName = "Should Set Given values while generating data")]
+        [Fact(DisplayName = "Should Set Given Values While Generating Data")]
         public void Should_Set_Given_Values_While_Generating_Data()
         {
             var givenDataTime = new DateTime(2017, 1, 1);
@@ -157,8 +241,8 @@ namespace StubGenerator.Test
         }
 
 
-        [Fact(DisplayName = "Check Unsupported Types")]
-        public void Check_Unsupported_Types()
+        [Fact(DisplayName = "Should Unsupported Types Are Null")]
+        public void Should_Unsupported_Types_Are_Null()
         {
             var generatedStubData = _stubManager.CreateNew<UnsupportedTypes>();
             Assert.NotNull(generatedStubData);
@@ -193,6 +277,26 @@ namespace StubGenerator.Test
         {
             var generatedStubData = _stubManager.InvokeCreateNew("StubGenerator.Test.Models.GenericModel`2<StubGenerator.Test.Models.ModelWithComplexTypeProperty, StubGenerator.Test.Models;StubGenerator.Test.Models.ComplexModel, StubGenerator.Test.Models>, StubGenerator.Test.Models");
             Assert.NotNull(generatedStubData);
+        }
+
+
+        [Fact(DisplayName = "Should Set Given Value Property Has Default Value Attribute")]
+        public void Should_Set_Given_Value_Property_Has_Default_Value_Attribute()
+        {
+            var generatedStubData = _stubManager.CreateNew<DefaultValueTestModel>();
+            Assert.NotNull(generatedStubData);
+            Assert.Equal(DefaultValueTestModel.defaultEmail, generatedStubData.Email);
+            Assert.Equal(DefaultValueTestModel.defaultEnum, generatedStubData.TestEnum);
+            Assert.Equal(DefaultValueTestModel.defaultInt, generatedStubData.TestInt);
+        }
+
+
+        [Fact(DisplayName = "Should Set Null Value If Property Has Ignore Attribute")]
+        public void Should_Set_Null_Value_If_Property_Has_Ignore_Attribute()
+        {
+            var generatedStubData = _stubManager.CreateNew<DefaultValueTestModel>();
+            Assert.NotNull(generatedStubData);
+            Assert.Null(generatedStubData.Country);
         }
     }
 }

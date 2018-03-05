@@ -6,8 +6,11 @@ namespace StubGenerator.Core.FakeDataGenerators
     {
         private readonly Type _enumType;
 
-        private static readonly Random _random;
-        static EnumValueGenerator() => _random = new Random();
+        private static readonly Lazy<Random> _random;
+        static EnumValueGenerator()
+        {
+            _random = new Lazy<Random>(() => new Random());
+        }
 
         public EnumValueGenerator(Type enumType)
         {
@@ -17,7 +20,7 @@ namespace StubGenerator.Core.FakeDataGenerators
         public object Generate()
         {
             var values = Enum.GetValues(_enumType);
-            return values.GetValue(_random.Next(values.Length));
+            return values.GetValue(_random.Value.Next(values.Length));
         }
     }
 }

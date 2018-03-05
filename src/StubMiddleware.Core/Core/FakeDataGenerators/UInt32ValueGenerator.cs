@@ -2,17 +2,20 @@
 
 namespace StubGenerator.Core.FakeDataGenerators
 {
-    public class DoubleValueGenerator : IValueGenerator
+    public class UInt32ValueGenerator : IValueGenerator
     {
         private static readonly Lazy<Random> _random;
-        static DoubleValueGenerator()
+
+        static UInt32ValueGenerator()
         {
             _random = new Lazy<Random>(() => new Random());
         }
 
         public object Generate()
         {
-            return _random.Value.NextDouble();
+            uint thirtyBits = (uint)_random.Value.Next(1 << 30);
+            uint twoBits = (uint)_random.Value.Next(1 << 2);
+            return (thirtyBits << 2) | twoBits;
         }
     }
 }
