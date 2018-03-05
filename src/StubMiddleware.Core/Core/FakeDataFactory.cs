@@ -5,6 +5,7 @@ using System;
 using StubGenerator.Defaults;
 using System.Linq;
 using StubGenerator.Core.FakeDataGenerators;
+using StubGenerator.Core.Attributes;
 
 namespace StubGenerator.Core.FakeDataProvider
 {
@@ -27,6 +28,17 @@ namespace StubGenerator.Core.FakeDataProvider
             if (!propertyInfo.PropertyType.IsSimple())
             {
                 return null;
+            }
+
+            if (propertyInfo.GetCustomAttribute<StubGeneratorIgnoreAttribute>() != null)
+            {
+                return null;
+            }
+
+            var stubGeneratorDefaultValueAttribute = propertyInfo.GetCustomAttribute<StubGeneratorDefaultValueAttribute>();
+            if (stubGeneratorDefaultValueAttribute != null)
+            {
+                return stubGeneratorDefaultValueAttribute.DefaultValue;
             }
 
             var matchingConvetion = _stubDataMappingProfile.Conventions.FirstOrDefault(c => c.Condition(propertyInfo));
@@ -64,15 +76,15 @@ namespace StubGenerator.Core.FakeDataProvider
                 case TypeCode.Int32:
                     return new IntegerValueGeneratorBase<Int32>().Generate();
                 case TypeCode.Int64:
-                    return new IntegerValueGeneratorBase<Int64>().Generate();
+                    return new FloatValueGeneratorBase<Int64>().Generate();
                 case TypeCode.UInt16:
                     return new IntegerValueGeneratorBase<UInt16>().Generate();
                 case TypeCode.UInt32:
-                    return new IntegerValueGeneratorBase<UInt32>().Generate();
+                    return new UInt32ValueGenerator().Generate();
                 case TypeCode.UInt64:
-                    return new IntegerValueGeneratorBase<UInt64>().Generate();
+                    return new FloatValueGeneratorBase<UInt64>().Generate();
                 case TypeCode.Single:
-                    return new IntegerValueGeneratorBase<Single>().Generate();
+                    return new FloatValueGeneratorBase<Single>().Generate();
                 case TypeCode.Byte:
                     return new IntegerValueGeneratorBase<Byte>().Generate();
                 case TypeCode.Double:

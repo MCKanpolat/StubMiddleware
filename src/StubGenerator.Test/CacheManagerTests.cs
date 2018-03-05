@@ -16,8 +16,8 @@ namespace StubGenerator.Test
             _stubTypeMemoryCache = new MemoryStubTypeCache(_cacheKeyGenerator);
         }
 
-        [Fact(DisplayName = "Cache Key Generator Test")]
-        public void CacheKeyGeneratorTest()
+        [Fact(DisplayName = "Should Generate Cache Key")]
+        public void Should_Generate_Cache_Key()
         {
             var cacheKey = _cacheKeyGenerator.GenerateKey<PersonDto>();
             Assert.NotEmpty(cacheKey);
@@ -32,9 +32,8 @@ namespace StubGenerator.Test
             Assert.Equal(cachedPropertyInfos.Length, personData.GetType().GetProperties().Length);
         }
 
-
-        [Fact(DisplayName = "Ensure Memory Cache Manager Empty")]
-        public void CacheManagerEmptyTest()
+        [Fact(DisplayName = "Should Memory Cache Is Empty")]
+        public void Should_Memory_Cache_Is_Empty()
         {
             var personData = new PersonDto();
             _stubTypeMemoryCache.Set(personData, personData.GetType().GetProperties());
@@ -42,9 +41,8 @@ namespace StubGenerator.Test
             Assert.True(_stubTypeMemoryCache.IsEmpty());
         }
 
-
-        [Fact(DisplayName = "Memory Cache Manager Concurrency")]
-        public void CacheManagerConcurrencyTest()
+        [Fact(DisplayName = "Should Cache Manager Is Concurrent")]
+        public void Should_Cache_Manager_Is_Concurrent()
         {
             var personData = new PersonDto();
             var mainTask = Task.Run(async () =>

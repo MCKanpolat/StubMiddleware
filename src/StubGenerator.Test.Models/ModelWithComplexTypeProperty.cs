@@ -77,4 +77,9 @@ namespace StubGenerator.Test.Models
 
         public string FirstName { get; set; }
     }
+
+    public class ModelOfType<T> where T : struct
+    {
+        public T Value { get; set; }
+    }
 }

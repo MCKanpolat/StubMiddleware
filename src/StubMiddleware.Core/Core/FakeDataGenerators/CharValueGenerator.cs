@@ -4,16 +4,19 @@ namespace StubGenerator.Core.FakeDataGenerators
 {
     public class CharValueGenerator : IValueGenerator
     {
-        private static char[] charValues;
-        private static int charsize;
+        private static readonly Lazy<Random> _random;
+        private static char[] _charValues;
+        private static int _charsize;
         static CharValueGenerator()
         {
-            charValues = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
-            charsize = charValues.Length;
+            _random = new Lazy<Random>(() => new Random());
+            _charValues = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+            _charsize = _charValues.Length;
         }
+  
         public object Generate()
         {
-            return charValues[new Random().Next(0, charsize - 1)];
+            return _charValues[_random.Value.Next(0, _charsize - 1)];
         }
     }
 }
