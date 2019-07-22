@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <AssemblyName>StubGenerator</AssemblyName>
     <RootNamespace>StubGenerator</RootNamespace>
     <Authors>mckanpolat</Authors>
@@ -14,7 +14,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Faker.Net" Version="1.0.3" />
+    <PackageReference Include="Faker.Net" Version="1.1.1" />
   </ItemGroup>
 
 </Project>
